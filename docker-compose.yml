@@ -1,11 +1,19 @@
 version: "2"
 
 services:
-  statsd:
-   image: graphiteapp/graphite-statsd
-   ports:
-    - "80:80"
-    - "2003-2004:2003-2004"
-    - "2023-2024:2023-2024"
-    - "8125:8125/udp"
-    - "8126:8126"
+  graphite:
+    image: graphiteapp/graphite-statsd
+    ports:
+      - "80:80"
+      - "2003-2004:2003-2004"
+      - "2023-2024:2023-2024"
+      - "8125:8125/udp"
+      - "8126:8126"
+  grafana:
+    image: grafana/grafana:5.1.0
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    ports:
+      - 3000:3000
+    depends_on:
+      - graphite
